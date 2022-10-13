@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : Health
 {
@@ -11,6 +12,7 @@ public class Player : Health
     [SerializeField] Material _bodyMaterial;
     [SerializeField] Material invincibleMaterial;
     [SerializeField] AudioClip damageSound;
+    [SerializeField] Image hpBar;
     private Health healthModule;
     private bool _invincible = false;
     public bool Invincible
@@ -31,14 +33,10 @@ public class Player : Health
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("escape"))
-        {
-            Application.Quit();
-        }
-        if (Input.GetKeyDown("backspace"))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+
+        hpBar.fillAmount = (float)healthModule.currentHealth / (float)healthModule.maxHealth;
+
+        
     }
 
     /*
@@ -101,14 +99,19 @@ public class Player : Health
 
     private void OnTriggerEnter(Collider other)
     {
-        Hand hand = other.gameObject.GetComponent<Hand>();
-        Eye eye = other.gameObject.GetComponent<Eye>();
-        if (hand != null ^ eye != null)
+        Hand h = other.GetComponent<Hand>();
+        Eye e = other.GetComponent<Eye>();
+        KillPlane kp = other.gameObject.GetComponent<KillPlane>();
+        if (kp != null)
         {
-            if (Invincible == false)
+            takeDamage(30);
+        }
+        if(h != null ^ e != null)
+        {
+            if (!_invincible)
             {
+                healthModule.shaker.TriggerShake(1f);
                 StartCoroutine(takeHit());
-                //ImpactFeedback();
             }
         }
     }

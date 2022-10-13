@@ -66,15 +66,18 @@
     <Compile Include="Assets\Scripts\GunController.cs" />
     <Compile Include="Assets\Scripts\SpeedIncrease.cs" />
     <Compile Include="Assets\Scripts\InvincibilityPowerup.cs" />
+    <Compile Include="Assets\Scripts\Damageable.cs" />
     <Compile Include="Assets\Scripts\TankController.cs" />
     <Compile Include="Assets\Scripts\BossController.cs" />
     <Compile Include="Assets\Scripts\PowerUpBase.cs" />
+    <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\TreasureIncrease.cs" />
     <Compile Include="Assets\Scripts\CollectibleBase.cs" />
     <Compile Include="Assets\Scripts\HealthIncrease.cs" />
     <Compile Include="Assets\Scripts\Common\AudioHelper.cs" />
-    <Compile Include="Assets\Scripts\Damageable.cs" />
-    <Compile Include="Assets\Scripts\Health.cs" />
+    <Compile Include="Assets\Scripts\Ground.cs" />
+    <Compile Include="Assets\Scripts\KillPlane.cs" />
+    <Compile Include="Assets\Scripts\Shake.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

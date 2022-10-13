@@ -33,6 +33,7 @@ public class GunController : MonoBehaviour
 
             canShoot = false;
             Instantiate(projectile, transform.position, transform.rotation);
+            Feedback();
             StartCoroutine(shotDelay(cooldown[cooldownIndex]));
             
             if(cooldownIndex == 0)

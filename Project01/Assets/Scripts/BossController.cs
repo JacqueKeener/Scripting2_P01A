@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class BossController : MonoBehaviour
@@ -11,6 +12,8 @@ public class BossController : MonoBehaviour
     [SerializeField] GameObject eye;
     [SerializeField] float delayBetweenStates = 1f;
     [SerializeField] float rotationSpeed = 40f;
+    [SerializeField] Ground ground;
+    [SerializeField] Image hpBar;
     private Health health;
     private float direction = 1f;
     enum states
@@ -23,7 +26,12 @@ public class BossController : MonoBehaviour
         wait,
         reversing,
         charging,
-        turning
+        turning,
+        returning,
+        flipHands,
+        stagger,
+        rise,
+        flipBack
     }
 
     enum locations
@@ -46,6 +54,12 @@ public class BossController : MonoBehaviour
     private bool inPlace = true;
     private bool delaying = false;
     private parts raised = parts.leftHand;
+    private int sinkFirst = -1;
+    private int sinkSecond = -1;
+    private Vector3 leftHandStart;
+    private Vector3 rightHandStart;
+    private Vector3 leftHandSlamSpot;
+    private Vector3 rightHandSlamSpot;
 
     //private float currentDegree = 1f;
 
@@ -59,6 +73,10 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
+
+        hpBar.fillAmount = (float)health.currentHealth / (float)health.maxHealth;
+
+        Debug.Log(current);
         if(current == states.idle)
         {
             decideNextState();
@@ -232,15 +250,144 @@ public class BossController : MonoBehaviour
             }
         }
 
+        if(current == states.slap)
+        {
+            if (spot != locations.center)
+            {
+                inPlace = false;
+                locations nextSpot = locations.center;
+                if (spot > nextSpot)
+                {
+                    direction = -1f;
+                }
+                else
+                {
+                    direction = 1f;
+                }
+                spot = locations.center;
+            }
+            if (!inPlace)
+            {
+                transform.RotateAround(new Vector3(5f, 0f, -5f), Vector3.up, rotationSpeed * Time.deltaTime * direction);
+                if (direction == 1f)
+                {
+                    if (transform.position.x > 5)
+                    {
+                        transform.position = new Vector3(5f, 0f, 15f);
+                        transform.LookAt((2 * transform.position) - new Vector3(5f, 0f, -5f));
+                        inPlace = true;
+                        //current = states.wait;
+                        //StartCoroutine(stateDelay(delayBetweenStates));
+                    }
+                }
+                else
+                {
+                    if (transform.position.x < 5)
+                    {
+                        transform.position = new Vector3(5f, 0f, 15f);
+                        transform.LookAt((2 * transform.position) - new Vector3(5f, 0f, -5f));
+                        inPlace = true;
+                        //current = states.wait;
+                        //StartCoroutine(stateDelay(delayBetweenStates));
+                    }
+                }
+            }
+            else
+            {
+                if (sinkFirst == -1)
+                {
+                    if (spot == locations.left)
+                    {
+                        sinkFirst = Random.Range(0, 6);
+                    }
+                    if (spot == locations.right)
+                    {
+                        sinkFirst = Random.Range(0, 3);
+                    }
+                    if (spot == locations.center)
+                    {
+                        int temp = Random.Range(0, 6);
+                        if (temp == 0)
+                        {
+                            temp = 8;
+                        }
+                        if (temp == 3)
+                        {
+                            temp = 7;
+                        }
+                        sinkFirst = temp;
+                        leftHandStart = leftHand.transform.position;
+                    }
+                }
+                if (sinkSecond == -1)
+                {
+                    if (spot == locations.left)
+                    {
+                        sinkSecond = Random.Range(0, 3) + 6;
+                    }
+                    if (spot == locations.right)
+                    {
+                        sinkSecond = Random.Range(0, 6);
+                    }
+                    if (spot == locations.center)
+                    {
+                        sinkSecond = ((Random.Range(0, 3) * 3));
+                    }
+                    rightHandStart = rightHand.transform.position;
+                    StartCoroutine(slapTiles());
+                }
+
+                leftHand.transform.Translate((ground.tiles[sinkFirst].transform.position.x - leftHandStart.x) * (Time.deltaTime / 3), (15f - leftHandStart.y) * (Time.deltaTime / 3), (ground.tiles[sinkFirst].transform.position.z - leftHandStart.z) * (Time.deltaTime / 3));
+                rightHand.transform.Translate((ground.tiles[sinkSecond].transform.position.x - rightHandStart.x) * (Time.deltaTime / 3), (15f - rightHandStart.y) * (Time.deltaTime / 3), (ground.tiles[sinkSecond].transform.position.z - rightHandStart.z) * (Time.deltaTime / 3));
+            }
+        }
+
+        if(current == states.flipHands)
+        {
+            leftHand.transform.Rotate(new Vector3(-90f, 0f, 0f) * Time.deltaTime);
+            rightHand.transform.Rotate(new Vector3(-90f, 0f, 0f) * Time.deltaTime);
+        }
+
+        if (current == states.flipBack)
+        {
+            leftHand.transform.Rotate(new Vector3(90f, 0f, 0f) * Time.deltaTime);
+            rightHand.transform.Rotate(new Vector3(90f, 0f, 0f) * Time.deltaTime);
+        }
+
+        if (current == states.rise)
+        {
+            leftHand.transform.Translate(Vector3.forward * 14f * Time.deltaTime);
+            rightHand.transform.Translate(Vector3.forward * 14f * Time.deltaTime);
+            
+        }
+
+
+        if (current == states.slam)
+        {
+            
+            leftHand.transform.Translate(Vector3.back * 14f * Time.deltaTime);
+            rightHand.transform.Translate(Vector3.back * 14f * Time.deltaTime);
+        }
+
+        if(current == states.returning)
+        {
+            leftHand.transform.Translate((leftHandStart.x - leftHandSlamSpot.x) * (Time.deltaTime / 3), (leftHandStart.y - leftHandSlamSpot.y) * (Time.deltaTime / 3), (leftHandStart.z- leftHandSlamSpot.z) * (Time.deltaTime / 3));
+            rightHand.transform.Translate((rightHandStart.x - rightHandSlamSpot.x) * (Time.deltaTime / 3), (rightHandStart.y - rightHandSlamSpot.y) * (Time.deltaTime / 3), (rightHandStart.z - rightHandSlamSpot.z) * (Time.deltaTime / 3));
+            
+        }
+
     }
 
     private void decideNextState()
     {
-        current = (states)Random.Range(0, 2);
+        current = (states)Random.Range(0, 3);
+        
         while (last == current)
         {
-            current = (states)Random.Range(0, 2);
+            current = (states)Random.Range(0, 3);
+           
         }
+        
         last = current;
         if(current == states.rotate)
         {
@@ -291,9 +438,55 @@ public class BossController : MonoBehaviour
         StartCoroutine(stateDelay(delayBetweenStates));
     }
 
+    private IEnumerator slapTiles()
+    {
+        yield return new WaitForSeconds(3f);
+        current = states.flipHands;
+        StartCoroutine(slapSlam());
+    }
+
+    private IEnumerator slapSlam()
+    {
+        yield return new WaitForSeconds(1f);
+        leftHand.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+        rightHand.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+        current = states.slam;
+        StartCoroutine(slapTwo());
+    }
+    private IEnumerator slapTwo()
+    {
+        yield return new WaitForSeconds(1f);
+        current = states.stagger;
+        ground.sinkGround(sinkFirst, sinkSecond);
+        yield return new WaitForSeconds(2f);
+        current = states.rise;
+        StartCoroutine(slapThree());
+    }
+
+    private IEnumerator slapThree()
+    {
+        yield return new WaitForSeconds(1f);
+        current = states.flipBack;
+        yield return new WaitForSeconds(1f);
+        leftHandSlamSpot = leftHand.transform.position;
+        rightHandSlamSpot = rightHand.transform.position;
+        current = states.returning;
+        StartCoroutine(slapFour());
+    }
+
+    private IEnumerator slapFour()
+    {
+        yield return new WaitForSeconds(3f);
+        current = states.wait;
+        sinkSecond = -1;
+        sinkFirst = -1;
+        StartCoroutine(stateDelay(delayBetweenStates));
+    }
+
 
     public void takeHit(int damage)
     {
+        hpBar.fillAmount = ((float)health.currentHealth - (float)damage) / (float)health.maxHealth;
         health.takeDamage(damage);
     }
 }
