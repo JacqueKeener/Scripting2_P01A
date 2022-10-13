@@ -31,20 +31,21 @@ public abstract class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("f occ");
         Player player = other.gameObject.GetComponent<Player>();
         if(player != null)
         {
             if (player.Invincible == false)
             {
-                PlayerImpact(player);
-                ImpactFeedback();
+                player.takeHit();
+                //ImpactFeedback();
             }
         }
     }
 
     protected virtual void PlayerImpact(Player player)
     {
-        player.DecreaseHealth(_damageAmount);
+        //player.DecreaseHealth(_damageAmount);
     }
 
     private void ImpactFeedback()

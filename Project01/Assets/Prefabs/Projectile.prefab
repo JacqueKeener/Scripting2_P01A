@@ -111,6 +111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  shootSound: {fileID: 0}
   hitSound: {fileID: 0}
-  hitParticles: {fileID: 0}
+  hitParticles: {fileID: 4481358647115112923, guid: dcc0864e0dc0c9649ae8bd431c868546, type: 3}
+  lifespan: 7

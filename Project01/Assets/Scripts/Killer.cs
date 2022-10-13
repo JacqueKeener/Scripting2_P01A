@@ -19,7 +19,7 @@ public class Killer : Enemy
     protected override void PlayerImpact(Player player)
     {
         //base.PlayerImpact(player);
-        player.Kill();
+        //player.Kill();
     }
 
 

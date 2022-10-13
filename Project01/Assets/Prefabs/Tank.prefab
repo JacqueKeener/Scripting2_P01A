@@ -375,9 +375,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7deae910b21a2142adfc1132501442e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 10
+  killParticles: {fileID: 0}
+  killSound: {fileID: 0}
   _maxHealth: 3
   _body: {fileID: 1780509523596842800}
+  gun: {fileID: 1780509523785048884}
   _bodyMaterial: {fileID: 2100000, guid: b1310ba89d583b1449ae1c0bf6e5b4f0, type: 2}
+  invincibleMaterial: {fileID: 2100000, guid: 10e82c98eebd5414287d9b0f1442bb8c, type: 2}
+  damageSound: {fileID: 0}
 --- !u!1 &1780509523785048882
 GameObject:
   m_ObjectHideFlags: 0

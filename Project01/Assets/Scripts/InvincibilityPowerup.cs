@@ -20,14 +20,14 @@ public class InvincibilityPowerup : PowerUpBase
 
     protected override void PowerUp(Player player)
     {
-        player.Invincible = true;
+        //player.Invincible = true;
         player.ApplyBodyMaterial(_bodyMaterial);
     }
 
     protected override IEnumerator PowerDown(Player player, float duration)
     {
         yield return new WaitForSeconds(duration);
-        player.Invincible = false;
+        //player.Invincible = false;
         player.ResetBodyMaterial();
         AudioHelper.PlayClip2D(PowerDownSound, 1f);
         gameObject.SetActive(false);

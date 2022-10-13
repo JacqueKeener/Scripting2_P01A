@@ -565,6 +565,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &311072013 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1780509523742017721, guid: 6e2d5d63ea1e75747b59c050775c961c, type: 3}
+  m_PrefabInstance: {fileID: 1780509523350239433}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &311072019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 311072013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0926beeb690169b49b52946fc99cbd97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  killParticles: {fileID: 1562210061114943919, guid: 7801bea8fd155ed46b43dcc3fbb8d7cc, type: 3}
+  killSound: {fileID: 0}
 --- !u!1 &398321582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,9 +1314,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33c3548bad9378c4fa9e5f64edf8d17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageAmount: 3
-  _impactParticles: {fileID: 0}
-  _impactSound: {fileID: 0}
+  health: 10
+  killParticles: {fileID: 0}
+  killSound: {fileID: 0}
   boss: {fileID: 1900701406}
 --- !u!54 &788405632
 Rigidbody:
@@ -1362,7 +1382,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1, z: 1}
+  m_Size: {x: 1.5, y: 1.3, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &788556399
 MeshRenderer:
@@ -1426,9 +1446,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29508f6247417c84dbb6bea7e3cab339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageAmount: 1
-  _impactParticles: {fileID: 0}
-  _impactSound: {fileID: 0}
+  health: 10
+  killParticles: {fileID: 0}
+  killSound: {fileID: 0}
   boss: {fileID: 1900701406}
 --- !u!54 &788556402
 Rigidbody:
@@ -1853,7 +1873,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1, z: 1}
+  m_Size: {x: 1.5, y: 1.3, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1532460929
 MeshRenderer:
@@ -1917,9 +1937,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29508f6247417c84dbb6bea7e3cab339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageAmount: 1
-  _impactParticles: {fileID: 0}
-  _impactSound: {fileID: 0}
+  health: 10
+  killParticles: {fileID: 0}
+  killSound: {fileID: 0}
   boss: {fileID: 1900701406}
 --- !u!54 &1532460932
 Rigidbody:
@@ -2044,6 +2064,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1900701405}
   - component: {fileID: 1900701406}
+  - component: {fileID: 1900701408}
   - component: {fileID: 1900701407}
   m_Layer: 0
   m_Name: Boss
@@ -2085,7 +2106,8 @@ MonoBehaviour:
   rightHand: {fileID: 788556396}
   leftHand: {fileID: 1532460926}
   eye: {fileID: 788405626}
-  health: 100
+  delayBetweenStates: 1.5
+  rotationSpeed: 40
 --- !u!54 &1900701407
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2102,6 +2124,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1900701408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900701404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0926beeb690169b49b52946fc99cbd97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  killParticles: {fileID: 1562210061114943919, guid: a288e1f33e49e2e448c5ebac24da3da7, type: 3}
+  killSound: {fileID: 0}
 --- !u!1 &2058773634
 GameObject:
   m_ObjectHideFlags: 0
@@ -2355,5 +2392,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1780509523742017724, guid: 6e2d5d63ea1e75747b59c050775c961c, type: 3}
+      propertyPath: health
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1780509523742017724, guid: 6e2d5d63ea1e75747b59c050775c961c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1780509523742017724, guid: 6e2d5d63ea1e75747b59c050775c961c, type: 3}
+      propertyPath: killParticles
+      value: 
+      objectReference: {fileID: 1562210061114943919, guid: 7801bea8fd155ed46b43dcc3fbb8d7cc, type: 3}
+    - target: {fileID: 1780509523742017724, guid: 6e2d5d63ea1e75747b59c050775c961c, type: 3}
+      propertyPath: invincibleMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 10e82c98eebd5414287d9b0f1442bb8c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e2d5d63ea1e75747b59c050775c961c, type: 3}

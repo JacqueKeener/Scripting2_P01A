@@ -33,6 +33,15 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Damageable dam = other.gameObject.GetComponent<Damageable>();
+        Player play = other.gameObject.GetComponent<Player>();
+        if(dam != null & play == null)
+        {
+            dam.takeDamage(1);
+            Feedback();
+            gameObject.SetActive(false);
+        }
+        /*
         Hand hand = other.GetComponent<Hand>();
         if(hand != null)
         {
@@ -47,6 +56,7 @@ public class Projectile : MonoBehaviour
             eye.decreaseHealth();
             gameObject.SetActive(false);
         }
+        */
     }
 
     private void Feedback()
